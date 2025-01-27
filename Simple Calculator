@@ -3,5 +3,12 @@
 def add(a, b):
     return a + b
 
+# Day 2: Added subtraction functionality
+def subtract(a, b):
+    return a - b
+
 result = add(2, 3)
-print(f"Result: {result}")
+print(f"Addition Result: {result}")
+
+subtraction_result = subtract(10, 4)
+print(f"Subtraction Result: {subtraction_result}")
