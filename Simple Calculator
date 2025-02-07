@@ -20,19 +20,25 @@ def power():
     calculate("^")
 
 def square_root():
-    try:
-        num = float(entry_num1.get())
-        if num < 0:
-            messagebox.showerror("Error", "Square root of negative numbers is not allowed!")
-            return
-        result = math.sqrt(num)
-        label_result.config(text=f"Result: {result}")
-        log_calculation(f"√{num}", result)
-    except ValueError:
-        messagebox.showerror("Error", "Please enter a valid number!")
+    calculate("√")
 
 def modulus():
     calculate("%")
+
+def sin_func():
+    calculate("sin")
+
+def cos_func():
+    calculate("cos")
+
+def tan_func():
+    calculate("tan")
+
+def log_func():
+    calculate("log")
+
+def ln_func():
+    calculate("ln")
 
 # Day 9: Added history logging to a file
 def log_calculation(expression, result):
@@ -43,30 +49,61 @@ def log_calculation(expression, result):
 def calculate(operation):
     try:
         num1 = float(entry_num1.get())
-        num2 = float(entry_num2.get()) if entry_num2.get() else None
 
-        if operation == "+":
-            result = num1 + num2
-        elif operation == "-":
-            result = num1 - num2
-        elif operation == "*":
-            result = num1 * num2
-        elif operation == "/":
-            if num2 == 0:
-                messagebox.showerror("Error", "Division by zero is not allowed!")
-                return
-            result = num1 / num2
-        elif operation == "^":
-            result = num1 ** num2
-        elif operation == "%":
-            if num2 == 0:
-                messagebox.showerror("Error", "Modulus by zero is not allowed!")
-                return
-            result = num1 % num2
+        if operation in {"+", "-", "*", "/", "^", "%"}:
+            num2 = float(entry_num2.get())
+            if operation == "+":
+                result = num1 + num2
+            elif operation == "-":
+                result = num1 - num2
+            elif operation == "*":
+                result = num1 * num2
+            elif operation == "/":
+                if num2 == 0:
+                    messagebox.showerror("Error", "Division by zero is not allowed!")
+                    return
+                result = num1 / num2
+            elif operation == "^":
+                result = num1 ** num2
+            elif operation == "%":
+                if num2 == 0:
+                    messagebox.showerror("Error", "Modulus by zero is not allowed!")
+                    return
+                result = num1 % num2
+            expression = f"{num1} {operation} {num2}"
+        
         else:
-            return
+            if operation == "√":
+                if num1 < 0:
+                    messagebox.showerror("Error", "Square root of negative numbers is not allowed!")
+                    return
+                result = math.sqrt(num1)
+                expression = f"√({num1})"
+            elif operation == "sin":
+                result = math.sin(math.radians(num1))
+                expression = f"sin({num1})"
+            elif operation == "cos":
+                result = math.cos(math.radians(num1))
+                expression = f"cos({num1})"
+            elif operation == "tan":
+                if num1 % 90 == 0 and (num1 // 90) % 2 != 0:
+                    messagebox.showerror("Error", "tan is undefined for this angle!")
+                    return
+                result = math.tan(math.radians(num1))
+                expression = f"tan({num1})"
+            elif operation == "log":
+                if num1 <= 0:
+                    messagebox.showerror("Error", "Logarithm of non-positive numbers is not allowed!")
+                    return
+                result = math.log10(num1)
+                expression = f"log({num1})"
+            elif operation == "ln":
+                if num1 <= 0:
+                    messagebox.showerror("Error", "Natural logarithm of non-positive numbers is not allowed!")
+                    return
+                result = math.log(num1)
+                expression = f"ln({num1})"
 
-        expression = f"{num1} {operation} {num2}" if num2 is not None else f"{operation}({num1})"
         label_result.config(text=f"Result: {result}")
         log_calculation(expression, result)
 
@@ -75,7 +112,7 @@ def calculate(operation):
 
 # GUI Setup
 root = tk.Tk()
-root.title("Advanced Calculator")
+root.title("Scientific Calculator")
 
 tk.Label(root, text="Enter first number:").grid(row=0, column=0)
 entry_num1 = tk.Entry(root)
@@ -92,8 +129,8 @@ tk.Button(root, text="/", command=divide).grid(row=3, column=1)
 tk.Button(root, text="^ (Power)", command=power).grid(row=4, column=0)
 tk.Button(root, text="√ (Square Root)", command=square_root).grid(row=4, column=1)
 tk.Button(root, text="% (Modulus)", command=modulus).grid(row=5, column=0)
-
-label_result = tk.Label(root, text="Result: ")
-label_result.grid(row=6, column=0, columnspan=2)
-
-root.mainloop()
+tk.Button(root, text="sin", command=sin_func).grid(row=6, column=0)
+tk.Button(root, text="cos", command=cos_func).grid(row=6, column=1)
+tk.Button(root, text="tan", command=tan_func).grid(row=7, column=0)
+tk.Button(root, text="log", command=log_func).grid(row=7, column=1)
+tk.Button(root, text=
