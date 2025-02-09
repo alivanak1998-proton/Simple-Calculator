@@ -50,10 +50,12 @@ def log_func():
 def ln_func():
     calculate("ln")
 
-# Log history
+# Log history and update UI
 def log_calculation(expression, result):
     with open("calculations.txt", "a") as file:
         file.write(f"{expression} = {result}\n")
+    
+    history_listbox.insert(0, f"{expression} = {result}")
 
 # Perform calculation
 def calculate(operation):
@@ -156,5 +158,10 @@ for text, command in buttons:
 
 label_result = tk.Label(root, text="Result: ", bg=BG_COLOR, fg=FG_COLOR)
 label_result.grid(row=row_num + 1, column=0, columnspan=2)
+
+# History Listbox
+tk.Label(root, text="Calculation History:", bg=BG_COLOR, fg=FG_COLOR).grid(row=row_num + 2, column=0, columnspan=2)
+history_listbox = tk.Listbox(root, height=5, width=40, bg=BTN_COLOR, fg=FG_COLOR)
+history_listbox.grid(row=row_num + 3, column=0, columnspan=2)
 
 root.mainloop()
