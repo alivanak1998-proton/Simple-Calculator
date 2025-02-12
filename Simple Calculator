@@ -24,76 +24,57 @@ def copy_to_clipboard():
         root.update()
         messagebox.showinfo("Copied", "Result copied to clipboard!")
 
-def calculate(operation):
+# تبدیل واحدها
+def convert_units():
     try:
-        num1 = float(entry_num1.get())
-        num2 = float(entry_num2.get()) if entry_num2.get() else None
+        value = float(entry_num1.get())
+        unit_from = unit_var_from.get()
+        unit_to = unit_var_to.get()
 
-        if operation == "+":
-            result = num1 + num2
-        elif operation == "-":
-            result = num1 - num2
-        elif operation == "*":
-            result = num1 * num2
-        elif operation == "/":
-            if num2 == 0:
-                messagebox.showerror("Error", "Cannot divide by zero!")
-                return
-            result = num1 / num2
-        elif operation == "^":
-            result = num1 ** num2
-        elif operation == "√":
-            if num1 < 0:
-                messagebox.showerror("Error", "Square root of negative numbers is not allowed!")
-                return
-            result = math.sqrt(num1)
+        conversion_factors = {
+            ("m", "km"): 0.001, ("km", "m"): 1000,
+            ("kg", "lb"): 2.20462, ("lb", "kg"): 0.453592,
+            ("cm", "inch"): 0.393701, ("inch", "cm"): 2.54,
+            ("L", "ml"): 1000, ("ml", "L"): 0.001
+        }
+
+        if (unit_from, unit_to) in conversion_factors:
+            result = value * conversion_factors[(unit_from, unit_to)]
+            label_result.config(text=f"Result: {result} {unit_to}")
         else:
-            messagebox.showerror("Error", "Invalid operation!")
-            return
-
-        label_result.config(text=f"Result: {result}")
+            messagebox.showerror("Error", "Invalid conversion!")
 
     except ValueError:
-        messagebox.showerror("Error", "Please enter valid numbers!")
+        messagebox.showerror("Error", "Please enter a valid number!")
 
 # تنظیمات رابط کاربری
 root = tk.Tk()
-root.title("Calculator with Clipboard")
+root.title("Calculator with Unit Converter")
 root.configure(bg=BG_COLOR)
 
-tk.Label(root, text="Enter first number:", bg=BG_COLOR, fg=FG_COLOR).grid(row=0, column=0)
+tk.Label(root, text="Enter value:", bg=BG_COLOR, fg=FG_COLOR).grid(row=0, column=0)
 entry_num1 = tk.Entry(root, bg=BTN_COLOR, fg=FG_COLOR)
 entry_num1.grid(row=0, column=1)
 
-tk.Label(root, text="Enter second number (if needed):", bg=BG_COLOR, fg=FG_COLOR).grid(row=1, column=0)
-entry_num2 = tk.Entry(root, bg=BTN_COLOR, fg=FG_COLOR)
-entry_num2.grid(row=1, column=1)
+# انتخاب واحد مبدا
+unit_var_from = tk.StringVar(value="m")
+unit_menu_from = tk.OptionMenu(root, unit_var_from, "m", "km", "kg", "lb", "cm", "inch", "L", "ml")
+unit_menu_from.grid(row=0, column=2)
 
-buttons = [
-    ("+", lambda: calculate("+")), ("-", lambda: calculate("-")),
-    ("*", lambda: calculate("*")), ("/", lambda: calculate("/")),
-    ("^", lambda: calculate("^")), ("√", lambda: calculate("√"))
-]
+# انتخاب واحد مقصد
+unit_var_to = tk.StringVar(value="km")
+unit_menu_to = tk.OptionMenu(root, unit_var_to, "m", "km", "kg", "lb", "cm", "inch", "L", "ml")
+unit_menu_to.grid(row=0, column=3)
 
-row_num = 2
-col_num = 0
+# دکمه تبدیل
+convert_button = tk.Button(root, text="Convert", command=convert_units, bg=BTN_COLOR, fg=FG_COLOR, activebackground=BTN_HOVER)
+convert_button.grid(row=1, column=0, columnspan=2)
 
-for text, command in buttons:
-    btn = tk.Button(root, text=text, command=command, bg=BTN_COLOR, fg=FG_COLOR, activebackground=BTN_HOVER)
-    btn.grid(row=row_num, column=col_num, sticky="ew")
-    btn.bind("<Enter>", on_enter)
-    btn.bind("<Leave>", on_leave)
-
-    col_num += 1
-    if col_num > 1:
-        col_num = 0
-        row_num += 1
+# دکمه کپی نتیجه
+copy_button = tk.Button(root, text="Copy Result", command=copy_to_clipboard, bg=BTN_COLOR, fg=FG_COLOR, activebackground=BTN_HOVER)
+copy_button.grid(row=1, column=2, columnspan=2)
 
 label_result = tk.Label(root, text="Result: ", bg=BG_COLOR, fg=FG_COLOR)
-label_result.grid(row=row_num + 1, column=0, columnspan=2)
-
-# دکمه کپی به کلیپ‌بورد
-copy_button = tk.Button(root, text="Copy Result", command=copy_to_clipboard, bg=BTN_COLOR, fg=FG_COLOR, activebackground=BTN_HOVER)
-copy_button.grid(row=row_num + 2, column=0, columnspan=2)
+label_result.grid(row=2, column=0, columnspan=4)
 
 root.mainloop()
