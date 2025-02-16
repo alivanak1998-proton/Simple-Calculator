@@ -10,6 +10,8 @@ FG_COLOR = "#FFFFFF"
 BTN_COLOR = "#444444"
 BTN_HOVER = "#555555"
 
+history = []
+
 def solve_and_plot():
     try:
         a = float(entry_a.get())
@@ -27,13 +29,15 @@ def solve_and_plot():
             x2 = (-b - math.sqrt(discriminant)) / (2*a)
             result = f"Two solutions: x1 = {x1:.2f}, x2 = {x2:.2f}"
 
+        # ذخیره تاریخچه
+        equation = f"{a}x² + {b}x + {c} = 0 → {result}"
+        history.append(equation)
         label_result.config(text=f"Result: {result}")
 
         # رسم نمودار
         x_vals = np.linspace(-10, 10, 400)
         y_vals = a*x_vals**2 + b*x_vals + c
-
-        plt.plot(x_vals, y_vals, label=f'{a}x² + {b}x + {c}')
+        plt.plot(x_vals, y_vals, label=equation)
         plt.axhline(0, color='black')
         plt.axvline(0, color='black')
         plt.title("Quadratic Equation Graph")
@@ -45,6 +49,13 @@ def solve_and_plot():
 
     except ValueError:
         messagebox.showerror("Error", "Please enter valid numbers!")
+
+def show_history():
+    if history:
+        history_text = "\n".join(history[-5:])  # نمایش ۵ محاسبه آخر
+        messagebox.showinfo("Calculation History", history_text)
+    else:
+        messagebox.showinfo("Calculation History", "No history available yet!")
 
 # رابط کاربری
 root = tk.Tk()
@@ -68,7 +79,10 @@ entry_c.grid(row=3, column=1)
 solve_btn = tk.Button(root, text="Solve & Plot", command=solve_and_plot, bg=BTN_COLOR, fg=FG_COLOR)
 solve_btn.grid(row=4, column=0, columnspan=2)
 
+history_btn = tk.Button(root, text="Show History", command=show_history, bg=BTN_COLOR, fg=FG_COLOR)
+history_btn.grid(row=5, column=0, columnspan=2)
+
 label_result = tk.Label(root, text="Result: ", bg=BG_COLOR, fg=FG_COLOR)
-label_result.grid(row=5, column=0, columnspan=2)
+label_result.grid(row=6, column=0, columnspan=2)
 
 root.mainloop()
