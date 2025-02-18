@@ -61,3 +61,22 @@ label_trig_result = tk.Label(root, text="", bg=BG_COLOR, fg=FG_COLOR)
 label_trig_result.grid(row=3, column=0, columnspan=5)
 
 root.mainloop()
+import math
+import cmath
+
+def factorial(n):
+    return math.factorial(n) if n >= 0 and n == int(n) else "Invalid input"
+
+def complex_add(a, b):
+    return a + b
+
+def complex_multiply(a, b):
+    return a * b
+
+# تست
+print("Factorial(5):", factorial(5))
+
+z1 = complex(2, 3)
+z2 = complex(1, -4)
+print(f"Complex Add: {z1} + {z2} = {complex_add(z1, z2)}")
+print(f"Complex Multiply: {z1} * {z2} = {complex_multiply(z1, z2)}")
