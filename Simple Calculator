@@ -80,3 +80,23 @@ z1 = complex(2, 3)
 z2 = complex(1, -4)
 print(f"Complex Add: {z1} + {z2} = {complex_add(z1, z2)}")
 print(f"Complex Multiply: {z1} * {z2} = {complex_multiply(z1, z2)}")
+import math
+
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def exponentiation(base, exp):
+    return base ** exp
+
+# تست
+print("Is 17 prime?", is_prime(17))
+print("Is 20 prime?", is_prime(20))
+
+print("2^5 =", exponentiation(2, 5))
+print("3^4 =", exponentiation(3, 4))
+
