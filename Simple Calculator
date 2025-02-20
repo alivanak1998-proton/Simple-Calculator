@@ -100,3 +100,16 @@ print("Is 20 prime?", is_prime(20))
 print("2^5 =", exponentiation(2, 5))
 print("3^4 =", exponentiation(3, 4))
 
+import math
+
+def square_root(n):
+    return math.sqrt(n) if n >= 0 else "Invalid input"
+
+def natural_log(n):
+    return math.log(n) if n > 0 else "Invalid input"
+
+# تست
+print("Square root of 25:", square_root(25))
+print("Square root of -4:", square_root(-4))
+print("Natural log of 10:", natural_log(10))
+print("Natural log of -5:", natural_log(-5))
