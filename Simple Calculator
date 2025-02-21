@@ -113,3 +113,22 @@ print("Square root of 25:", square_root(25))
 print("Square root of -4:", square_root(-4))
 print("Natural log of 10:", natural_log(10))
 print("Natural log of -5:", natural_log(-5))
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_function(func, x_range=(-10, 10), num_points=100):
+    x = np.linspace(x_range[0], x_range[1], num_points)
+    y = [func(val) for val in x]
+    
+    plt.plot(x, y, label=f"{func.__name__}(x)")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title(f"Plot of {func.__name__}(x)")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# تست
+plot_function(np.sin)
+plot_function(np.cos)
+plot_function(np.exp)
