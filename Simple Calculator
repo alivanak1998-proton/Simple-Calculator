@@ -132,3 +132,26 @@ def plot_function(func, x_range=(-10, 10), num_points=100):
 plot_function(np.sin)
 plot_function(np.cos)
 plot_function(np.exp)
+import tkinter as tk
+
+def calculate():
+    try:
+        result = eval(entry.get())
+        label_result.config(text=f"Result: {result}")
+    except Exception as e:
+        label_result.config(text="Error")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Simple Calculator")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+root.mainloop()
