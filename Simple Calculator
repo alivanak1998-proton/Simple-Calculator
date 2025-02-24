@@ -190,3 +190,123 @@ label_history.pack(pady=10)
 root.mainloop()
 
 root.mainloop()
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        if "%" in expression:
+            num, percent = expression.split("%")
+            result = (float(num) * float(percent)) / 100
+        else:
+            result = eval(expression)
+        
+        label_result.config(text=f"Result: {result}")
+        history.append(f"{expression} = {result}")
+        update_history()
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_text = "\n".join(history[-5:])
+    label_history.config(text=f"History:\n{history_text}")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Calculator with Percentage")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+label_history = tk.Label(root, text="History:")
+label_history.pack(pady=10)
+
+root.mainloop()
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        if "%" in expression:
+            num, percent = expression.split("%")
+            result = (float(num) * float(percent)) / 100
+        else:
+            result = eval(expression)
+        
+        label_result.config(text=f"Result: {result}")
+        history.append(f"{expression} = {result}")
+        update_history()
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_text = "\n".join(history[-5:])
+    label_history.config(text=f"History:\n{history_text}")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Calculator with Percentage")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+label_history = tk.Label(root, text="History:")
+label_history.pack(pady=10)
+
+root.mainloop()
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        if "%" in expression:
+            num, percent = expression.split("%")
+            result = (float(num) * float(percent)) / 100
+        else:
+            result = eval(expression)
+        
+        label_result.config(text=f"Result: {result}")
+        history.append(f"{expression} = {result}")
+        update_history()
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_text = "\n".join(history[-5:])
+    label_history.config(text=f"History:\n{history_text}")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Calculator with Percentage")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+label_history = tk.Label(root, text="History:")
+label_history.pack(pady=10)
+
+root.mainloop()
