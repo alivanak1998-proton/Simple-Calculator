@@ -358,3 +358,56 @@ label_history.pack(pady=10)
 
 root.mainloop()
 #toda not code
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        if "%" in expression:
+            num, percent = expression.split("%")
+            result = (float(num) * float(percent)) / 100
+        else:
+            result = eval(expression)
+        
+        label_result.config(text=f"Result: {result}")
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        save_to_file(record)
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_text = "\n".join(history[-5:])
+    label_history.config(text=f"History:\n{history_text}")
+
+def save_to_file(record):
+    with open("calculation_history.txt", "a") as file:
+        file.write(record + "\n")
+
+def clear():
+    entry.delete(0, tk.END)
+    label_result.config(text="Result: ")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Calculator with History Save")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_clear = tk.Button(root, text="Clear", command=clear)
+btn_clear.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+label_history = tk.Label(root, text="History:")
+label_history.pack(pady=10)
+
+root.mainloop()
