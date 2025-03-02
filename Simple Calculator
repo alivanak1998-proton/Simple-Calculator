@@ -474,3 +474,76 @@ label_history.pack(pady=10)
 
 load_history()
 root.mainloop()
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        if "%" in expression:
+            num, percent = expression.split("%")
+            result = (float(num) * float(percent)) / 100
+        else:
+            result = eval(expression)
+        
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        save_to_file(record)
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_text = "\n".join(history[-5:])
+    label_history.config(text=f"History:\n{history_text}")
+
+def save_to_file(record):
+    with open("calculation_history.txt", "a") as file:
+        file.write(record + "\n")
+
+def load_history():
+    try:
+        with open("calculation_history.txt", "r") as file:
+            lines = file.readlines()
+            history.extend(line.strip() for line in lines[-5:])
+            update_history()
+    except FileNotFoundError:
+        pass
+
+def undo_last():
+    if history:
+        history.pop()
+        update_history()
+        with open("calculation_history.txt", "w") as file:
+            file.write("\n".join(history) + "\n")
+
+def clear():
+    entry.delete(0, tk.END)
+    label_result.config(text="Result: ")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Calculator with Undo")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_clear = tk.Button(root, text="Clear", command=clear)
+btn_clear.pack(pady=5)
+
+btn_undo = tk.Button(root, text="Undo", command=undo_last)
+btn_undo.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+label_history = tk.Label(root, text="History:")
+label_history.pack(pady=10)
+
+load_history()
+root.mainloop()
