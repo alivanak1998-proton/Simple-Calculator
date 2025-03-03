@@ -547,3 +547,67 @@ label_history.pack(pady=10)
 
 load_history()
 root.mainloop()
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        save_to_file(record)
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def save_to_file(record):
+    with open("calculation_history.txt", "a") as file:
+        file.write(record + "\n")
+
+def load_history():
+    try:
+        with open("calculation_history.txt", "r") as file:
+            lines = file.readlines()
+            history.extend(line.strip() for line in lines)
+            update_history()
+    except FileNotFoundError:
+        pass
+
+def clear():
+    entry.delete(0, tk.END)
+    label_result.config(text="Result: ")
+
+# رابط گرافیکی
+root = tk.Tk()
+root.title("Calculator with Scrollable History")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_clear = tk.Button(root, text="Clear", command=clear)
+btn_clear.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+scrollbar = tk.Scrollbar(root)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+history_list = tk.Listbox(root, yscrollcommand=scrollbar.set, height=10)
+history_list.pack(pady=10)
+
+scrollbar.config(command=history_list.yview)
+
+load_history()
+root.mainloop()
