@@ -682,3 +682,24 @@ scrollbar.config(command=history_list.yview)
 
 load_history()
 root.mainloop()
+import tkinter as tk
+
+history = []
+theme = "light"
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        save_to_file(record)
+        label_result.config(text=f"Result: {result}")
+        label_result.bind("<Button-1>", lambda e: copy_to_clipboard(result))
+    except Exception:
+        label_result.config(text="Error")
+
+def copy_to_clipboard(result):
+    root.clipboard_clear()
+    root.clipb
