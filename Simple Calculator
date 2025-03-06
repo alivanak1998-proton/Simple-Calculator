@@ -703,3 +703,65 @@ def calculate():
 def copy_to_clipboard(result):
     root.clipboard_clear()
     root.clipb
+import tkinter as tk
+from fpdf import FPDF
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        save_to_file(record)
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def save_to_file(record):
+    with open("calculation_history.txt", "a") as file:
+        file.write(record + "\n")
+
+def export_to_pdf():
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Calculation History", ln=True, align="C")
+    
+    for record in history:
+        pdf.cell(200, 10, txt=record, ln=True)
+    
+    pdf.output("calculation_history.pdf")
+    label_result.config(text="PDF Exported!")
+
+root = tk.Tk()
+root.title("Calculator with PDF Export")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_export = tk.Button(root, text="Export to PDF", command=export_to_pdf)
+btn_export.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+scrollbar = tk.Scrollbar(root)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+history_list = tk.Listbox(root, yscrollcommand=scrollbar.set, height=10)
+history_list.pack(pady=10)
+
+scrollbar.config(command=history_list.yview)
+
+root.mainloop()
