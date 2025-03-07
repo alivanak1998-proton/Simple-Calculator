@@ -765,3 +765,60 @@ history_list.pack(pady=10)
 scrollbar.config(command=history_list.yview)
 
 root.mainloop()
+import tkinter as tk
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        save_to_file(record)
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def save_to_file(record):
+    with open("calculation_history.txt", "a") as file:
+        file.write(record + "\n")
+
+def clear_all():
+    entry.delete(0, tk.END)
+    label_result.config(text="Result: ")
+    history.clear()
+    update_history()
+
+root = tk.Tk()
+root.title("Calculator with Clear All")
+
+root.configure(bg="#2C2F33")
+
+entry = tk.Entry(root, width=20, bg="#99AAB5", fg="black")
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate, bg="#7289DA", fg="white")
+btn_calculate.pack(pady=5)
+
+btn_clear = tk.Button(root, text="Clear All", command=clear_all, bg="#99AAB5", fg="black")
+btn_clear.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ", bg="#2C2F33", fg="white")
+label_result.pack(pady=10)
+
+scrollbar = tk.Scrollbar(root)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+history_list = tk.Listbox(root, yscrollcommand=scrollbar.set, height=10, bg="#23272A", fg="white")
+history_list.pack(pady=10)
+
+scrollbar.config(command=history_list.yview)
+
+root.mainloop()
