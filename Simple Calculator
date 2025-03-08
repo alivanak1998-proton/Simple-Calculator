@@ -822,3 +822,26 @@ history_list.pack(pady=10)
 scrollbar.config(command=history_list.yview)
 
 root.mainloop()
+import tkinter as tk
+from tkinter import filedialog
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def save_as():
+    file_path = filedialog.asksave
