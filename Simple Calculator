@@ -845,3 +845,49 @@ def update_history():
 
 def save_as():
     file_path = filedialog.asksave
+import tkinter as tk
+
+history = []
+deleted_items = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def undo():
+    if history:
+        deleted_items.append(history.pop())
+        update_history()
+        label_result.config(text="Last action undone!")
+
+root = tk.Tk()
+root.title("Calculator with Undo")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_undo = tk.Button(root, text="Undo", command=undo)
+btn_undo.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+history_list = tk.Listbox(root, height=10)
+history_list.pack(pady=10)
+
+root.mainloop()
