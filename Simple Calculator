@@ -891,3 +891,59 @@ history_list = tk.Listbox(root, height=10)
 history_list.pack(pady=10)
 
 root.mainloop()
+import tkinter as tk
+
+history = []
+deleted_items = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        update_history()
+        label_result.config(text=f"Result: {result}")
+        deleted_items.clear()  # پاک کردن Redo history بعد از یک محاسبه جدید
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def undo():
+    if history:
+        deleted_items.append(history.pop())
+        update_history()
+        label_result.config(text="Last action undone!")
+
+def redo():
+    if deleted_items:
+        history.append(deleted_items.pop())
+        update_history()
+        label_result.config(text="Last undone action redone!")
+
+root = tk.Tk()
+root.title("Calculator with Undo/Redo")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_undo = tk.Button(root, text="Undo", command=undo)
+btn_undo.pack(pady=5)
+
+btn_redo = tk.Button(root, text="Redo", command=redo)
+btn_redo.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+history_list = tk.Listbox(root, height=10)
+history_list.pack(pady=10)
+
+root.mainloop()
