@@ -1021,3 +1021,4 @@ history_list.pack(pady=10)
 
 load_history()
 root.mainloop()
+good
