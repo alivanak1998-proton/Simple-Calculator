@@ -1106,3 +1106,89 @@ history_list.pack(pady=10)
 
 load_history()
 root.mainloop()
+import tkinter as tk
+import math
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression)
+        record = f"{expression} = {result}"
+        history.append(record)
+        save_history()
+        update_history()
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def scientific_operation(op):
+    try:
+        num = float(entry.get())
+        if op == "sqrt":
+            result = math.sqrt(num)
+        elif op == "sin":
+            result = math.sin(math.radians(num))
+        elif op == "cos":
+            result = math.cos(math.radians(num))
+        elif op == "tan":
+            result = math.tan(math.radians(num))
+        elif op == "log":
+            result = math.log10(num)
+        entry.delete(0, tk.END)
+        entry.insert(0, str(result))
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def save_history():
+    with open("calc_history.txt", "w") as file:
+        for item in history:
+            file.write(item + "\n")
+
+def load_history():
+    try:
+        with open("calc_history.txt", "r") as file:
+            for line in file:
+                history.append(line.strip())
+        update_history()
+    except FileNotFoundError:
+        pass
+
+root = tk.Tk()
+root.title("Scientific Calculator")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_sqrt = tk.Button(root, text="√", command=lambda: scientific_operation("sqrt"))
+btn_sqrt.pack(pady=5)
+
+btn_sin = tk.Button(root, text="sin", command=lambda: scientific_operation("sin"))
+btn_sin.pack(pady=5)
+
+btn_cos = tk.Button(root, text="cos", command=lambda: scientific_operation("cos"))
+btn_cos.pack(pady=5)
+
+btn_tan = tk.Button(root, text="tan", command=lambda: scientific_operation("tan"))
+btn_tan.pack(pady=5)
+
+btn_log = tk.Button(root, text="log", command=lambda: scientific_operation("log"))
+btn_log.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+history_list = tk.Listbox(root, height=10)
+history_list.pack(pady=10)
+
+load_history()
+root.mainloop()
