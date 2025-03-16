@@ -1268,3 +1268,88 @@ history_list.pack(pady=10)
 
 load_history()
 root.mainloop()
+import tkinter as tk
+import math
+
+memory = 0
+history = []
+
+def calculate():
+    try:
+        expression = entry.get().replace("%", "/100").replace("π", str(math.pi))
+        result = eval(expression)
+        history.append(f"{expression} = {result}")
+        save_history()
+        update_history()
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def insert_symbol(symbol):
+    entry.insert(tk.END, symbol)
+
+def memory_operation(op):
+    global memory
+    try:
+        num = float(entry.get())
+        if op == "M+":
+            memory += num
+        elif op == "M-":
+            memory -= num
+        elif op == "MR":
+            entry.delete(0, tk.END)
+            entry.insert(0, str(memory))
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_list.delete(0, tk.END)
+    for item in history[-10:]:
+        history_list.insert(tk.END, item)
+
+def save_history():
+    with open("calc_history.txt", "w") as file:
+        for item in history:
+            file.write(item + "\n")
+
+def load_history():
+    try:
+        with open("calc_history.txt", "r") as file:
+            for line in file:
+                history.append(line.strip())
+        update_history()
+    except FileNotFoundError:
+        pass
+
+root = tk.Tk()
+root.title("Calculator with % and π")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+btn_percent = tk.Button(root, text="%", command=lambda: insert_symbol("%"))
+btn_percent.pack(pady=5)
+
+btn_pi = tk.Button(root, text="π", command=lambda: insert_symbol("π"))
+btn_pi.pack(pady=5)
+
+btn_m_plus = tk.Button(root, text="M+", command=lambda: memory_operation("M+"))
+btn_m_plus.pack(pady=5)
+
+btn_m_minus = tk.Button(root, text="M-", command=lambda: memory_operation("M-"))
+btn_m_minus.pack(pady=5)
+
+btn_mr = tk.Button(root, text="MR", command=lambda: memory_operation("MR"))
+btn_mr.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+history_list = tk.Listbox(root, height=10)
+history_list.pack(pady=10)
+
+load_history()
+root.mainloop()
