@@ -1353,3 +1353,27 @@ history_list.pack(pady=10)
 
 load_history()
 root.mainloop()
+import tkinter as tk
+import cmath
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression, {"__builtins__": None}, {"j": 1j, "sqrt": cmath.sqrt})
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+root = tk.Tk()
+root.title("Complex Number Calculator")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+root.mainloop()
