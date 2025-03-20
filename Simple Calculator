@@ -1428,3 +1428,43 @@ label_result = tk.Label(root, text="Result: ")
 label_result.pack(pady=10)
 
 root.mainloop()
+import tkinter as tk
+import math
+
+history = []
+
+def calculate():
+    try:
+        expression = entry.get()
+        result = eval(expression, {"__builtins__": None}, 
+                      {"sin": math.sin, "cos": math.cos, "tan": math.tan, 
+                       "pi": math.pi, "radians": math.radians, "degrees": math.degrees})
+        history.append(f"{expression} = {result}")
+        update_history()
+        label_result.config(text=f"Result: {result}")
+    except Exception:
+        label_result.config(text="Error")
+
+def update_history():
+    history_text.config(state=tk.NORMAL)
+    history_text.delete(1.0, tk.END)
+    for line in history[-5:]:  # نمایش ۵ محاسبه آخر
+        history_text.insert(tk.END, line + "\n")
+    history_text.config(state=tk.DISABLED)
+
+root = tk.Tk()
+root.title("Scientific Calculator")
+
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
+
+btn_calculate = tk.Button(root, text="Calculate", command=calculate)
+btn_calculate.pack(pady=5)
+
+label_result = tk.Label(root, text="Result: ")
+label_result.pack(pady=10)
+
+history_text = tk.Text(root, height=5, width=30, state=tk.DISABLED)
+history_text.pack(pady=10)
+
+root.mainloop()
