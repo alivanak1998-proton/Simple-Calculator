@@ -1635,3 +1635,36 @@ history_text = tk.Text(root, height=5, width=30, state=tk.DISABLED)
 history_text.pack(pady=10)
 
 root.mainloop()
+import numpy as np
+
+def matrix_operations():
+    print("Choose an operation:")
+    print("1. Matrix Addition")
+    print("2. Matrix Multiplication")
+    print("3. Matrix Transpose")
+    choice = input("Enter your choice: ")
+
+    rows = int(input("Enter number of rows: "))
+    cols = int(input("Enter number of columns: "))
+
+    print("Enter elements for first matrix:")
+    matrix1 = np.array([[int(input()) for _ in range(cols)] for _ in range(rows)])
+
+    if choice in ["1", "2"]:
+        print("Enter elements for second matrix:")
+        matrix2 = np.array([[int(input()) for _ in range(cols)] for _ in range(rows)])
+
+    if choice == "1":
+        result = matrix1 + matrix2
+    elif choice == "2":
+        result = np.dot(matrix1, matrix2)
+    elif choice == "3":
+        result = matrix1.T
+    else:
+        print("Invalid choice")
+        return
+
+    print("Result:\n", result)
+
+# تست
+matrix_operations()
