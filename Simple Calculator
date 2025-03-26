@@ -1686,3 +1686,14 @@ def plot_function(expression, x_min=-10, x_max=10):
 # تست
 expression = input("Enter a function of x (e.g., x**2 + 2*x - 3): ")
 plot_function(expression)
+import sympy as sp
+
+def solve_equation(equation):
+    x = sp.Symbol('x')
+    solutions = sp.solve(equation, x)
+    return solutions
+
+# تست
+equation = input("Enter an equation (e.g., x**2 - 4*x + 3): ")
+solutions = solve_equation(equation)
+print("Roots:", solutions)
