@@ -1697,3 +1697,20 @@ def solve_equation(equation):
 equation = input("Enter an equation (e.g., x**2 - 4*x + 3): ")
 solutions = solve_equation(equation)
 print("Roots:", solutions)
+import sympy as sp
+
+def differentiate_and_integrate(expression):
+    x = sp.Symbol('x')
+    expr = sp.sympify(expression)
+
+    derivative = sp.diff(expr, x)
+    integral = sp.integrate(expr, x)
+
+    return derivative, integral
+
+# تست
+expression = input("Enter a function of x (e.g., x**3 + 2*x - 5): ")
+derivative, integral = differentiate_and_integrate(expression)
+
+print(f"Derivative: {derivative}")
+print(f"Integral: {integral} + C")
