@@ -1714,3 +1714,21 @@ derivative, integral = differentiate_and_integrate(expression)
 
 print(f"Derivative: {derivative}")
 print(f"Integral: {integral} + C")
+import sympy as sp
+
+def solve_linear_system(equations, variables):
+    eqs = [sp.sympify(eq) for eq in equations]
+    vars = [sp.Symbol(var) for var in variables]
+    
+    solutions = sp.solve(eqs, vars)
+    return solutions
+
+# تست
+num_eqs = int(input("Enter number of equations: "))
+equations = [input(f"Equation {i+1}: ") for i in range(num_eqs)]
+
+num_vars = int(input("Enter number of variables: "))
+variables = [input(f"Variable {i+1}: ") for i in range(num_vars)]
+
+solutions = solve_linear_system(equations, variables)
+print("Solutions:", solutions)
